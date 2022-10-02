@@ -1,6 +1,7 @@
 package gocache
 
 import (
+	"reflect"
 	"testing"
 )
 
@@ -40,5 +41,16 @@ func TestGet(t *testing.T) {
 	_, ok := testCache.get("key_not_exist")
 	if ok {
 		t.Fatalf("get wrong value when key not exist")
+	}
+}
+
+func TestGetter(t *testing.T) {
+	var f Getter = GetterFunc(func(key string) ([]byte, error) {
+		return []byte(key), nil
+	})
+
+	expect := []byte("key")
+	if v, _ := f.Get("key"); !reflect.DeepEqual(v, expect) {
+		t.Errorf("callback failed")
 	}
 }
