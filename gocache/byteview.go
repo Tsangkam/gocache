@@ -4,10 +4,12 @@ type ByteView struct {
 	b []byte
 }
 
+// inhert Value struct
 func (v ByteView) Len() int {
 	return len(v.b)
 }
 
+// to prevent modification
 func (v ByteView) ByteSlice() []byte {
 	return cloneBytes(v.b)
 }

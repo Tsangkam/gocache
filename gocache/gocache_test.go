@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func addSth(testCache *cache, key string, value string) {
+func addSth(testCache *block, key string, value string) {
 	testValue := ByteView{
 		b: []byte(value),
 	}
@@ -13,7 +13,7 @@ func addSth(testCache *cache, key string, value string) {
 }
 
 func TestAdd(t *testing.T) {
-	testCache := cache{}
+	testCache := block{}
 	for i := 0; i < 5; i++ {
 		letter := string(rune(int('a') + i))
 		// go addSth(&testCache, letter, "test_"+letter)
@@ -22,7 +22,7 @@ func TestAdd(t *testing.T) {
 }
 
 func TestGet(t *testing.T) {
-	testCache := cache{}
+	testCache := block{}
 	for i := 0; i < 5; i++ {
 		letter := string(rune(int('a') + i))
 		// go addSth(&testCache, letter, "test_"+letter)

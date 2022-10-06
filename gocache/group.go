@@ -6,10 +6,11 @@ import (
 	"sync"
 )
 
+// cache namespace
 type Group struct {
 	name      string
 	getter    Getter
-	mainCache cache
+	mainBlock block
 }
 
 var (
@@ -26,7 +27,7 @@ func NewGroup(name string, cacheBytes int64, getter Getter) *Group {
 	g := &Group{
 		name:      name,
 		getter:    getter,
-		mainCache: cache{cacheBytes: cacheBytes},
+		mainBlock: block{cacheBytes: cacheBytes},
 	}
 	groups[name] = g
 	return g
@@ -44,7 +45,7 @@ func (g *Group) Get(key string) (ByteView, error) {
 		return ByteView{}, fmt.Errorf("key is required")
 	}
 
-	if v, ok := g.mainCache.get(key); ok {
+	if v, ok := g.mainBlock.get(key); ok {
 		log.Println("[gocache] hit")
 		return v, nil
 	}
@@ -68,5 +69,5 @@ func (g *Group) getLocally(key string) (ByteView, error) {
 }
 
 func (g *Group) populateCache(key string, value ByteView) {
-	g.mainCache.add(key, value)
+	g.mainBlock.add(key, value)
 }
