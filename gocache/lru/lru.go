@@ -65,6 +65,6 @@ func (c *Cache) Add(key string, value Value) {
 		c.nbytes += int64(len(key)) + int64(value.Len())
 	}
 	for c.maxBytes != 0 && c.maxBytes < c.nbytes {
-		c.RemoveOldest() // remove the oldest element while oversize
+		c.RemoveOldest() // remove the oldest element if cache oversize
 	}
 }
