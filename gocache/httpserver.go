@@ -3,10 +3,13 @@ package gocache
 import (
 	"fmt"
 	"gocache/gocache/consistenthash"
+	pb "gocache/gocachepb"
 	"log"
 	"net/http"
 	"strings"
 	"sync"
+
+	"google.golang.org/protobuf/proto"
 )
 
 const (
@@ -61,8 +64,14 @@ func (p *HTTPPool) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	body, err := proto.Marshal(&pb.Response{Value: view.ByteSlice()})
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	w.Header().Set("Conten-Type", "application/octet-stream")
-	w.Write(view.ByteSlice())
+	w.Write(body)
 }
 
 func (p *HTTPPool) Set(peers ...string) {
